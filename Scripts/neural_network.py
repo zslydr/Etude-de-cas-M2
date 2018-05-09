@@ -21,13 +21,18 @@ data_path="/Users/Raphael/Mes cours/Magistere 3eme année/Etude de Cas/data/GTSR
 trainImages, trainLabels = Functions.readTrafficSigns(data_path)
 #%%
 
-print(len(trainLabels), len(trainImages))
-plt.imshow(trainImages[42])
-plt.show()
-
+trainImages_resized=map(Functions.resize_sign,trainImages,dim=(32,32))
 #%%
 
 from skimage.transform import resize
 bottle_resized = resize(trainImages[42], (32, 32))
 plt.imshow(bottle_resized)
 plt.show()
+
+#%%
+
+def add100(x):
+    return x+100
+t=map(add100, (44,22,66))
+#%%
+t()
