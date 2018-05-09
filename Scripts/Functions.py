@@ -31,6 +31,5 @@ def readTrafficSigns(rootpath):
     return(images, labels)
 
 
-def resize_sign(image,new_dim):
-    return(resize(image, new_dim))
-    
+def resize_sign(image):
+    return(resize(image, (32,32)))
