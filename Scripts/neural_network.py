@@ -10,7 +10,7 @@ import os
 import importlib
 
 import matplotlib.pyplot as plt
-os.chdir('/Users/Raphael/Dropbox/Etude de Cas M2/Scripts') #Select your working directory
+os.chdir('/Users/Raphael/Github/Etude-de-Cas-M2/Scripts') #Select your working directory
 cwd = os.getcwd()
 Functions=importlib.import_module("Functions")
 Functions=importlib.reload(Functions)
@@ -21,18 +21,4 @@ data_path="/Users/Raphael/Mes cours/Magistere 3eme année/Etude de Cas/data/GTSR
 trainImages, trainLabels = Functions.readTrafficSigns(data_path)
 #%%
 
-trainImages_resized=map(Functions.resize_sign,trainImages,dim=(32,32))
-#%%
-
-from skimage.transform import resize
-bottle_resized = resize(trainImages[42], (32, 32))
-plt.imshow(bottle_resized)
-plt.show()
-
-#%%
-
-def add100(x):
-    return x+100
-t=map(add100, (44,22,66))
-#%%
-t()
+trainImages_resized=[Functions.resize_sign(x,(32,32)) for x in trainImages]
