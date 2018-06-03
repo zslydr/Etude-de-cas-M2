@@ -33,3 +33,18 @@ def readTrafficSigns(rootpath):
 
 def resize_sign(image, new_dim):
     return(resize(image, new_dim, mode='constant'))
+
+def load_pickled_data(file, columns):
+    with open(file, mode='rb') as f:
+        dataset = pickle.load(f)
+    return tuple(map(lambda c: dataset[c], columns))
+
+def preprocess_dataset(X):
+    #Convert to grayscale, e.g. single Y channel
+    X = 0.299 * X[:, :, :, 0] + 0.587 * X[:, :, :, 1] + 0.114 * X[:, :, :, 2]
+    #Scale features to be in [0, 1]
+    X = (X / 255.).astype(np.float32)
+
+    # Add a single grayscale channel
+    X = X.reshape(X.shape + (1,)) 
+    return X
