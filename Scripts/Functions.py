@@ -7,7 +7,8 @@ Created on Wed May  9 09:41:52 2018
 """
 import csv
 from skimage.transform import resize
-
+import pickle
+import numpy as np
 import matplotlib.pyplot as plt
 
 def readTrafficSigns(rootpath):

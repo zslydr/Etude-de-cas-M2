@@ -13,45 +13,65 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.utils import shuffle
 from skimage import exposure
+from keras.models import Model
+from keras.models import load_model
+from keras.utils import to_categorical
 os.chdir('/Users/Raphael/Github/Etude-de-Cas-M2/Scripts') #Select your working directory
 cwd = os.getcwd()
 Functions=importlib.import_module("Functions")
 Functions=importlib.reload(Functions)
 #%%
 
-from keras.models import load_model
+
 model = load_model('first_model.hd5')
 
+model.summary()
+#%%
+
+X_test, y_test = Functions.load_pickled_data("/Users/Raphael/Mes cours/Magistere 3eme année/Etude de Cas/data/test.p", ['features', 'labels'])
+
 
 #%%
 
-X_test, y_test = load_pickled_data("/Users/Raphael/Mes cours/Magistere 3eme année/Etude de Cas/data/test.p", ['features', 'labels'])
 
 
-#%%
-
-
-from keras.utils import to_categorical
 
 target_test=to_categorical(y_test)
 
-X_test=preprocess_dataset(X_test)
+X_test=Functions.preprocess_dataset(X_test)
 
 #%%
 
 model.evaluate(X_test,target_test)
 
 #%%
-input_shape=(32,32,1)
+layer_name = 'conv2d_7'
+intermediate_layer_model = Model(inputs=model.input,
+                                 outputs=model.get_layer(layer_name).output)
+intermediate_output = intermediate_layer_model.predict(X_test[1].reshape((1,32,32,1)))
 
-from keras import backend as K
+for i in range(16):
+    plt.subplot(4, 4, i + 1)
+    plt.imshow(intermediate_output.reshape((30,30,16))[:,:,i])
+plt.show()
+#%%
+layer_name = 'conv2d_8'
+intermediate_layer_model = Model(inputs=model.input,
+                                 outputs=model.get_layer(layer_name).output)
+intermediate_output = intermediate_layer_model.predict(X_test[1].reshape((1,32,32,1)))
 
-inp = model.input
-outputs = [layer.output for layer in model.layers]
-functors = [K.function([inp]+ [K.learning_phase()], [out]) for out in outputs]
+for i in range(32):
+    plt.subplot(4, 8, i + 1)
+    plt.imshow(intermediate_output.reshape((28,28,32))[:,:,i])
+plt.show()
 
-#testing
-test = X_test[1].reshape(1,32,32,1)
-#np.random.random(input_shape)[np.newaxis,...]
-layer_outs = [func([test, 1.]) for func in functors]
-print(layer_outs)
+#%%
+layer_name = 'max_pooling2d_4'
+intermediate_layer_model = Model(inputs=model.input,
+                                 outputs=model.get_layer(layer_name).output)
+intermediate_output = intermediate_layer_model.predict(X_test[1].reshape((1,32,32,1)))
+
+for i in range(32):
+    plt.subplot(4, 8, i + 1)
+    plt.imshow(intermediate_output.reshape((14,14,32))[:,:,i])
+plt.show()
