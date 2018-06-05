@@ -36,6 +36,3 @@ del trainImages
 #%%
 with open('/Users/Raphael/Github/Etude-de-Cas-M2/data/trainImages_resized.pickle', 'wb') as f:
     pickle.dump(trainImages_resized, f, protocol=pickle.HIGHEST_PROTOCOL)
-    
-    
-#%%
