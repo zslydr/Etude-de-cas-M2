@@ -50,9 +50,30 @@ ax = sns.countplot(x=bad_predictions[:,1],order=sorted(count_values, key=count_v
 
 #%%
 
-X_test.shape
+bad_predictions_8=[x for x in bad_predictions if x[1] == 8]
+for i,x in enumerate(bad_predictions_8):
+    plt.subplot(6, 6, i + 1)
+    plt.imshow(x[0].reshape(32,32))
+plt.show()
+
 #%%
-plt.imshow(X_test[0].reshape(32,32),cmap='gray')
+
+bad_predictions_30=[x for x in bad_predictions if x[1] == 30]
+for i,x in enumerate(bad_predictions_30):
+    plt.subplot(6, 6, i + 1)
+    plt.imshow(x[0].reshape(32,32))
+plt.show()
+
+#%%
+
+bad_predictions_26=[x for x in bad_predictions if x[1] == 26]
+for i,x in enumerate(bad_predictions_26):
+    plt.subplot(6, 6, i + 1)
+    plt.imshow(x[0].reshape(32,32))
+plt.show()
+
+#%%
+plt.imshow(X_test[0].reshape(32,32))
 plt.show()
 
 #%%
