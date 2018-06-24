@@ -17,6 +17,8 @@ from skimage import exposure
 from keras.models import Model
 from keras.models import load_model
 from keras.utils import to_categorical
+import seaborn as sns
+
 os.chdir('/Users/Raphael/Github/Etude-de-Cas-M2/Scripts') #Select your working directory
 cwd = os.getcwd()
 Functions=importlib.import_module("Functions")
@@ -41,10 +43,16 @@ bad_predictions=np.array([(X_test[i],y_test[i],y.argmax()) for i,y in enumerate(
 #480 mauvaises prédictions
 
 count_values={x : len([y for y in bad_predictions[:,1] if y == x]) for x in np.unique(bad_predictions[:,1])}
-
 #%%
-import seaborn as sns
 
+from sklearn.metrics import confusion_matrix
+y_preds=[y.argmax() for y in preds]
+CM=confusion_matrix(y_preds,y_test)
+CM=CM/np.sum(CM,axis = 0)
+CM=CM-np.diag(np.diag(CM))
+
+sns.heatmap(CM)
+#%%
 sns.set_style("whitegrid")
 ax = sns.countplot(x=bad_predictions[:,1],order=sorted(count_values, key=count_values.get))
 
