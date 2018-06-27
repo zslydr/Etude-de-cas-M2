@@ -7,9 +7,15 @@ Created on Wed Jun 27 17:52:30 2018
 
 import csv
 from skimage.transform import resize
+from skimage import exposure
+from skimage.transform import rotate
+from skimage.transform import warp
+from skimage.transform import ProjectiveTransform
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
+import random
+
 
 def readTrafficSigns(rootpath):
     '''Reads traffic sign data for German Traffic Sign Recognition Benchmark.
