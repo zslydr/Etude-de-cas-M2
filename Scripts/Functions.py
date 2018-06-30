@@ -5,6 +5,8 @@ Created on Wed Jun 27 17:52:30 2018
 @author: Pierre Lavigne
 """
 
+#%%
+
 import csv
 from skimage.transform import resize
 from skimage import exposure
@@ -146,9 +148,26 @@ def increase_data(images,nb_int,labels=None):
             if labels is None:
                 pass
             else:
-                #labels = np.append(labels,labels[i])
+                labels = np.append(labels,labels[i])
                 labels = np.append(labels,labels[i])
         if i%100 == 0:
             print(i/data_size*100,'% de progression')
     return(images,labels)
+
+def sqr_noise(img,x,y,nb_sqr):
+    im = []
+    for k in range(len(img)):
+        img2 = img[k].copy()
+        randomsqrx = np.random.randint(x[0] ,x[1] ,nb_sqr)
+        randomsqry = np.random.randint(y[0] ,y[1] ,nb_sqr)
+        randomsqr = [randomsqrx,randomsqry] 
+        for (i,j) in zip(randomsqr[0],randomsqr[1]) :
+            size = np.random.randint(2,8,2)
+            if (np.random.randint(0,10)<5):
+                img2[i-size[0]+5:i+5,j+5-size[1]:j+5,:] = np.zeros(size[0]*size[1]*3).reshape(size[0],size[1],3)
+            else:
+                img2[i+5-size[0]:i+5,j+5-size[1]:j+5,:] = np.zeros(size[0]*size[1]*3).reshape(size[0],size[1],3) + 255
+        im.append(img2)
+    return np.array(im)
+
 
