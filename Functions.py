@@ -148,7 +148,7 @@ def increase_data(images,nb_int,labels=None):
             if labels is None:
                 pass
             else:
-                labels = np.append(labels,labels[i])
+                #labels = np.append(labels,labels[i])
                 labels = np.append(labels,labels[i])
         if i%100 == 0:
             print(i/data_size*100,'% de progression')
