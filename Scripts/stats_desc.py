@@ -19,7 +19,7 @@ os.chdir('/Users/Raphael/Github/Etude-de-Cas-M2/Scripts') #Select your working d
 cwd = os.getcwd()
 Functions=importlib.import_module("Functions")
 Functions=importlib.reload(Functions)
-#%%
+
 data_path="/Users/Raphael/Mes cours/Magistere 3eme année/Etude de Cas/data/"
 #path="C:/Users/Pierre Lavigne/Desktop/GTSRB/Final_Training/Images/"
 trainImages, trainLabels = Functions.readTrafficSigns(data_path+"GTSRB/Final_Training/Images/")
@@ -29,7 +29,7 @@ trainImages=np.array(trainImages)
 import seaborn as sns
 
 sns.set_style("whitegrid")
-ax = sns.countplot(x=y_train)
+ax = sns.countplot(x=trainLabels)
 
 #%%
 
