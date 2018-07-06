@@ -51,7 +51,6 @@ def preprocess_dataset(X):
     #Convert to grayscale, e.g. single Y channel
     X = 0.299 * X[:, :, :, 0] + 0.587 * X[:, :, :, 1] + 0.114 * X[:, :, :, 2]
     #Scale features to be in [0, 1]
-    X = (X / 255.).astype(np.float32)
 
     # Add a single grayscale channel
     X = X.reshape(X.shape + (1,)) 
@@ -115,7 +114,6 @@ def preprocess_dataset_new(X):
     #Convert to grayscale, e.g. single Y channel
     X = 0.299 * X[:, :, :, 0] + 0.587 * X[:, :, :, 1] + 0.114 * X[:, :, :, 2]
     #Scale features to be in [0, 1]
-    X = (X / 255.).astype(np.float32)
       
     # Apply localized histogram localization  
     for i in range(X.shape[0]):
@@ -129,7 +127,7 @@ def increase_data(images,nb_int,labels=None):
     data_size = images.shape[0]
     for i in range(data_size):
         for j in range(nb_int):
-            delta = random.uniform(-20,20) # scale using augmentation intensity
+            delta = 20 # scale using augmentation intensity
             d = random.uniform(-10,10)
             tl_top = random.uniform(-d, d)     # Top left corner, top margin
             tl_left = random.uniform(-d, d)    # Top left corner, left margin
@@ -140,18 +138,26 @@ def increase_data(images,nb_int,labels=None):
             br_bottom = random.uniform(-d, d)  # Bottom right corner, bottom margin
             br_right = random.uniform(-d, d)   # Bottom right corner, right margin
             transform = ProjectiveTransform()
-            transform.estimate(np.array(((tl_left, tl_top),(bl_left, image_size - bl_bottom),(image_size - br_right, image_size - br_bottom),
-                (image_size - tr_right, tr_top))), np.array(((0, 0),(0, image_size),(image_size, image_size),(image_size, 0))))
-        
-            images = np.append(images,[warp(images[i],transform,output_shape = (32,32),order = 1, mode='edge')],axis = 0)
-            images = np.append(images,[rotate(images[i], random.uniform(-delta, delta), mode = 'edge')],axis=0)
+            transform.estimate(np.array((
+                (tl_left, tl_top),
+                (bl_left, image_size - bl_bottom),
+                (image_size - br_right, image_size - br_bottom),
+                (image_size - tr_right, tr_top)
+            )), np.array((
+                (0, 0),
+                (0, image_size),
+                (image_size, image_size),
+                (image_size, 0)
+            )))
+            images = np.append(images,[warp(images[i],transform,output_shape = (32,32),order = 1, mode='edge').astype('float32')],axis = 0)
+            images = np.append(images,[rotate(images[i], random.uniform(-delta, delta), mode = 'edge').astype('float32')],axis=0)
             if labels is None:
                 pass
             else:
                 labels = np.append(labels,labels[i])
                 labels = np.append(labels,labels[i])
         if i%100 == 0:
-            print(i/data_size*100,'% de progression')
+            print(int(i)/data_size*100,'% de progression')
     return(images,labels)
 
 def sqr_noise(img,x,y,nb_sqr):
@@ -166,7 +172,7 @@ def sqr_noise(img,x,y,nb_sqr):
             if (np.random.randint(0,10)<5):
                 img2[i-size[0]+5:i+5,j+5-size[1]:j+5,:] = np.zeros(size[0]*size[1]*3).reshape(size[0],size[1],3)
             else:
-                img2[i+5-size[0]:i+5,j+5-size[1]:j+5,:] = np.zeros(size[0]*size[1]*3).reshape(size[0],size[1],3) + 255
+                img2[i+5-size[0]:i+5,j+5-size[1]:j+5,:] = np.zeros(size[0]*size[1]*3).reshape(size[0],size[1],3) + 1
         im.append(img2)
     return np.array(im)
 
