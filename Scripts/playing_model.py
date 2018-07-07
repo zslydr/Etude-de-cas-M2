@@ -23,7 +23,7 @@ os.chdir('/Users/Raphael/Github/Etude-de-Cas-M2/Scripts') #Select your working d
 cwd = os.getcwd()
 Functions=importlib.import_module("Functions")
 Functions=importlib.reload(Functions)
-
+#%%
 
 model = load_model('first_model.hd5')
 model.summary()

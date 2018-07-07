@@ -51,7 +51,7 @@ def preprocess_dataset(X):
     #Convert to grayscale, e.g. single Y channel
     X = 0.299 * X[:, :, :, 0] + 0.587 * X[:, :, :, 1] + 0.114 * X[:, :, :, 2]
     #Scale features to be in [0, 1]
-
+    X = (X / 255.).astype(np.float32)
     # Add a single grayscale channel
     X = X.reshape(X.shape + (1,)) 
     return X
