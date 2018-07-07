@@ -47,14 +47,29 @@ count_values={x : len([y for y in bad_predictions[:,1] if y == x]) for x in np.u
 
 from sklearn.metrics import confusion_matrix
 y_preds=[y.argmax() for y in preds]
-CM=confusion_matrix(y_preds,y_test)
-CM=CM/np.sum(CM,axis = 0)
+CM=confusion_matrix(y_test,y_preds)
+#CM=CM/np.sum(CM,axis = 0)
 CM=CM-np.diag(np.diag(CM))
-
+sns.set(font_scale=0.9)
 sns.heatmap(CM)
+plt.savefig('confusion_matrix.png')
 #%%
-sns.set_style("whitegrid")
-ax = sns.countplot(x=bad_predictions[:,1],order=sorted(count_values, key=count_values.get))
+sns.set(style = "whitegrid",font_scale=1)
+ax = sns.countplot(x=bad_predictions[:,1],order=sorted(count_values, key=count_values.get),color = "darkblue")
+ax.set(xlabel="Sign label", ylabel='Count of bad predictions')
+plt.savefig('hist_bad_pred.png')
+
+#%%
+
+plt.imshow(X_test[y_test == 6][5].reshape(32,32))
+plt.show()
+
+#%%
+
+correspondance = {0 : "pan_20", 1 : "pan_30", 2 : "pan_50",3 : "pan_60",4 : "pan_70", 5 : "pan_80",
+                  6 : "pan_90", 7 :, 8 :, 9 :, 10 :, 11 :, 12 :, 13 :,
+                  14 :, 15 :, 16 :, 17 :, 18 :, 19 :, 20 :, 21 :, 
+                  }
 
 #%%
 
@@ -66,10 +81,10 @@ plt.show()
 
 #%%
 
-bad_predictions_30=[x for x in bad_predictions if x[1] == 30]
-for i,x in enumerate(bad_predictions_30):
+bad_predictions_3=[x for x in bad_predictions if x[1] == 3]
+for i,x in enumerate(bad_predictions_3):
     plt.subplot(6, 6, i + 1)
-    plt.imshow(x[0].reshape(32,32))
+    plt.imshow(x[0].reshape(32,32),cmap='gray')
 plt.show()
 
 #%%
